@@ -1,0 +1,14 @@
+C:\Users\koste\source\repos\MyTime\bin\Debug\net8.0\MyTime.exe
+C:\Users\koste\source\repos\MyTime\bin\Debug\net8.0\MyTime.deps.json
+C:\Users\koste\source\repos\MyTime\bin\Debug\net8.0\MyTime.runtimeconfig.json
+C:\Users\koste\source\repos\MyTime\bin\Debug\net8.0\MyTime.dll
+C:\Users\koste\source\repos\MyTime\bin\Debug\net8.0\MyTime.pdb
+C:\Users\koste\source\repos\MyTime\obj\Debug\net8.0\MyTime.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\koste\source\repos\MyTime\obj\Debug\net8.0\MyTime.AssemblyInfoInputs.cache
+C:\Users\koste\source\repos\MyTime\obj\Debug\net8.0\MyTime.AssemblyInfo.cs
+C:\Users\koste\source\repos\MyTime\obj\Debug\net8.0\MyTime.csproj.CoreCompileInputs.cache
+C:\Users\koste\source\repos\MyTime\obj\Debug\net8.0\MyTime.dll
+C:\Users\koste\source\repos\MyTime\obj\Debug\net8.0\refint\MyTime.dll
+C:\Users\koste\source\repos\MyTime\obj\Debug\net8.0\MyTime.pdb
+C:\Users\koste\source\repos\MyTime\obj\Debug\net8.0\MyTime.genruntimeconfig.cache
+C:\Users\koste\source\repos\MyTime\obj\Debug\net8.0\ref\MyTime.dll
