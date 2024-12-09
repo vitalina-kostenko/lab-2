@@ -16,12 +16,6 @@
                     Run_MatrixTask matrixTask = new Run_MatrixTask();
                     matrixTask.RunMatrixTask();
                     break;
-
-                case "2":
-                    Console.WriteLine("\n\nЗапуск RunMatrixOperations\n");
-                    Run_MatrixOperations matrixOperationsTask = new Run_MatrixOperations();
-                    matrixOperationsTask.RunMatrixOperations();
-                    break;
             }
         }
     }
