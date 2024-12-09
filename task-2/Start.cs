@@ -1,5 +1,3 @@
-﻿using System;
-
 class Start_MyTime
 {
     public static void StartMyTime(string[] args)
@@ -18,14 +16,12 @@ class Start_MyTime
         MyTime currentTime = new MyTime(hours, minutes, seconds);
         Console.WriteLine($"Поточний час: {currentTime}");
 
-        MyTime nextHour = currentTime.AddOneHour();
-        Console.WriteLine($"Час через годину: {nextHour}");
+        Console.WriteLine("Введіть кількість секунд, які треба додати:");
+        int addSeconds = int.Parse(Console.ReadLine());
+        MyTime newTime = currentTime.AddSeconds(addSeconds);
+        Console.WriteLine($"Новий час: {newTime}");
 
-        MyTime nextLessonStart = new MyTime(23, 59, 59);
-        bool isInRange = nextLessonStart.IsInRange(new MyTime(6, 0, 0), new MyTime(0, 0, 1));
-        Console.WriteLine($"Чи поточний час в діапазоні між поточним часом та початком наступної пари: {isInRange}");
-
-        string currentLesson = currentTime.WhatLesson();
+        string currentLesson = newTime.WhatLesson(); 
         Console.WriteLine($"Поточна пара: {currentLesson}");
 
         int secondsSinceMidnight = currentTime.ToSecSinceMidnight();
@@ -36,8 +32,8 @@ class Start_MyTime
         Console.WriteLine($"Час з кількості секунд з початку доби: {timeFromSeconds}");
 
         MyTime timeFromSecond = new MyTime(0, 0, 0);
-        MyTime newTime = timeFromSecond.AddSeconds(-86405);
-        Console.WriteLine($"New Time: {newTime}");
+        MyTime newSecondTime = timeFromSecond.AddSeconds(-65);
+        Console.WriteLine($"New Time: {newSecondTime}");
     }
 }
 
