@@ -1,21 +1,17 @@
-﻿using System;
+using System;
+using System.Linq;
 
-public class MatrixOperations
+public class MatrixOperations : MyMatrix
 {
-    private double[,] _matrix;
+    public MatrixOperations(double[,] array) : base(array) { }
 
-    public MatrixOperations(double[,] array)
-    {
-        if (array == null)
-            throw new Exception("Matrix cannot be null.");
-        _matrix = (double[,])array.Clone();
-    }
+    public MatrixOperations(double[][] jaggedArray) : base(jaggedArray) { }
 
-    public double this[int row, int col]
-    {
-        get { return _matrix[row, col]; }
-        set { _matrix[row, col] = value; }
-    }
+    public MatrixOperations(string[] rows) : base(rows) { }
+
+    public MatrixOperations(string input) : base(input) { }
+
+    public MatrixOperations(MyMatrix other) : base(other) { }
 
     public static MatrixOperations operator +(MatrixOperations m1, MatrixOperations m2)
     {
@@ -26,7 +22,7 @@ public class MatrixOperations
 
         for (int i = 0; i < m1.Height; i++)
             for (int j = 0; j < m1.Width; j++)
-                result[i, j] = m1._matrix[i, j] + m2._matrix[i, j];
+                result[i, j] = m1[i, j] + m2[i, j];
 
         return new MatrixOperations(result);
     }
@@ -41,54 +37,31 @@ public class MatrixOperations
         for (int i = 0; i < m1.Height; i++)
             for (int j = 0; j < m2.Width; j++)
                 for (int k = 0; k < m1.Width; k++)
-                    result[i, j] += m1._matrix[i, k] * m2._matrix[k, j];
+                    result[i, j] += m1[i, k] * m2[k, j];
 
         return new MatrixOperations(result);
     }
 
-    private double[,] GetTransposedArray()
+    public MatrixOperations GetTransposedCopy()
     {
         double[,] transposed = new double[Width, Height];
 
         for (int i = 0; i < Height; i++)
             for (int j = 0; j < Width; j++)
-                transposed[j, i] = _matrix[i, j];
+                transposed[j, i] = this[i, j];
 
-        return transposed;
-    }
-
-    public MatrixOperations GetTransposedCopy()
-    {
-        double[,] transposedArray = GetTransposedArray();
-        return new MatrixOperations(transposedArray);
+        return new MatrixOperations(transposed);
     }
 
     public void Transpose()
     {
-        _matrix = GetTransposedArray();
-    }
+        double[,] transposed = new double[Width, Height];
 
-    public int Height
-    {
-        get { return _matrix.GetLength(0); }
-    }
+        for (int i = 0; i < Height; i++)
+            for (int j = 0; j < Width; j++)
+                transposed[j, i] = this[i, j];
 
-    public int Width
-    {
-        get { return _matrix.GetLength(1); }
-    }
-
-
-    public static bool IsRectangular(double[][] jaggedArray)
-    {
-        if (jaggedArray.Length == 0) return true;
-
-        int cols = jaggedArray[0].Length;
-        foreach (var row in jaggedArray)
-        {
-            if (row.Length != cols) return false;
-        }
-
-        return true;
+        _matrix = transposed;
     }
 }
+
