@@ -1,14 +1,12 @@
-﻿public class MyTime
+public class MyTime
 {
-    public int Hour { get; set; }
-    public int Minute { get; set; }
-    public int Second { get; set; }
+    public int Hour { get; private set; }
+    public int Minute { get; private set; }
+    public int Second { get; private set; }
 
     public MyTime(int h, int m, int s)
     {
-        Hour = h;
-        Minute = m;
-        Second = s;
+        FromSecSinceMidnight(h * 3600 + m * 60 + s);
     }
 
     public override string ToString()
@@ -23,37 +21,11 @@
 
     public void FromSecSinceMidnight(int t)
     {
-        int secPerDay = 60 * 60 * 24;
-        t %= secPerDay;
-        if (t < 0)
-            t += secPerDay;
+        int secPerDay = 24 * 3600;
+        t = ((t % secPerDay) + secPerDay) % secPerDay; 
         Hour = t / 3600;
         Minute = (t / 60) % 60;
         Second = t % 60;
-    }
-
-    public MyTime AddOneSecond()
-    {
-        int totalSeconds = ToSecSinceMidnight() + 1;
-        MyTime result = new MyTime(0, 0, 0);
-        result.FromSecSinceMidnight(totalSeconds);
-        return result;
-    }
-
-    public MyTime AddOneMinute()
-    {
-        int totalSeconds = ToSecSinceMidnight() + 60;
-        MyTime result = new MyTime(0, 0, 0);
-        result.FromSecSinceMidnight(totalSeconds);
-        return result;
-    }
-
-    public MyTime AddOneHour()
-    {
-        int totalSeconds = ToSecSinceMidnight() + 3600;
-        MyTime result = new MyTime(0, 0, 0);
-        result.FromSecSinceMidnight(totalSeconds);
-        return result;
     }
 
     public MyTime AddSeconds(int s)
@@ -62,6 +34,21 @@
         MyTime result = new MyTime(0, 0, 0);
         result.FromSecSinceMidnight(totalSeconds);
         return result;
+    }
+
+    public MyTime AddOneSecond()
+    {
+        return AddSeconds(1);
+    }
+
+    public MyTime AddOneMinute()
+    {
+        return AddSeconds(60);
+    }
+
+    public MyTime AddOneHour()
+    {
+        return AddSeconds(3600);
     }
 
     public int Difference(MyTime mt)
@@ -74,18 +61,14 @@
         int startSec = start.ToSecSinceMidnight();
         int finishSec = finish.ToSecSinceMidnight();
         int tSec = this.ToSecSinceMidnight();
+
         if (startSec <= finishSec)
         {
-            if (startSec <= tSec && tSec <= finishSec) return true;
-
-            else return false;
-
+            return tSec >= startSec && tSec <= finishSec;
         }
         else
         {
-            if (tSec >= startSec || tSec <= finishSec) return true;
-
-            else return false;
+            return tSec >= startSec || tSec <= finishSec;
         }
     }
 
@@ -111,20 +94,20 @@
 
         for (int i = 0; i < lessonStarts.Length; i++)
         {
-            if (this.Hour < lessonStarts[i].Hour || (this.Hour == lessonStarts[i].Hour && this.Minute < lessonStarts[i].Minute))
-            {
-                if (i == 0)
-                    return "Пари ще не почалися";
-                else
-                    return $"Перерва між {i}-ю та {i + 1}-ю парами";
-            }
-            else if ((this.Hour == lessonStarts[i].Hour && this.Minute == lessonStarts[i].Minute) ||
-                     (this.Hour == lessonEnds[i].Hour && this.Minute == lessonEnds[i].Minute))
+            if (this.IsInRange(lessonStarts[i], lessonEnds[i]))
             {
                 return $"{i + 1}-а пара";
             }
+
+            if (i < lessonStarts.Length - 1 && this.IsInRange(lessonEnds[i], lessonStarts[i + 1]))
+            {
+                return $"Перерва між {i + 1}-ю та {i + 2}-ю парами";
+            }
         }
 
-        return "Пари вже скінчилися";
+        if (this.IsInRange(lessonEnds[^1], lessonStarts[0]))
+            return "Пари вже скінчилися";
+
+        return "Пари ще не почалися";
     }
 }
