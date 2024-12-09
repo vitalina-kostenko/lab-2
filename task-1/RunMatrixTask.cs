@@ -1,29 +1,64 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using System;
 
 internal class Run_MatrixTask
 {
     public void RunMatrixTask()
     {
-        Console.WriteLine("Введіть кількість рядків для матриці:");
-        int rows = GetValidIntegerInput();
+        try
+        {
+            Console.WriteLine("Введіть кількість рядків для матриці:");
+            int rows = GetValidIntegerInput();
 
-        Console.WriteLine("Введіть кількість стовпців для матриці:");
-        int cols = GetValidIntegerInput();
+            Console.WriteLine("Введіть кількість стовпців для матриці:");
+            int cols = GetValidIntegerInput();
 
+            Console.WriteLine("\nВведення першої матриці:");
+            MatrixOperations matrix1 = InputMatrix(rows, cols);
+
+            Console.WriteLine("\nВведення другої матриці (розміри повинні збігатися):");
+            MatrixOperations matrix2 = InputMatrix(rows, cols);
+
+            Console.WriteLine("\nПерша матриця:");
+            Console.WriteLine(matrix1);
+
+            Console.WriteLine("\nДруга матриця:");
+            Console.WriteLine(matrix2);
+
+            Console.WriteLine("\nРезультат додавання матриць:");
+            MatrixOperations sumMatrix = matrix1 + matrix2;
+            Console.WriteLine(sumMatrix);
+
+            if (matrix1.Width == matrix2.Height)
+            {
+                Console.WriteLine("\nРезультат множення матриць:");
+                MatrixOperations productMatrix = matrix1 * matrix2;
+                Console.WriteLine(productMatrix);
+            }
+            else
+            {
+                Console.WriteLine("\nМноження неможливе: кількість стовпців першої матриці не дорівнює кількості рядків другої матриці.");
+            }
+
+            Console.WriteLine("\nТранспонована перша матриця:");
+            MatrixOperations transposedMatrix = matrix1.GetTransposedCopy();
+            Console.WriteLine(transposedMatrix);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Помилка: {ex.Message}");
+        }
+    }
+
+    static MatrixOperations InputMatrix(int rows, int cols)
+    {
         double[,] matrix = new double[rows, cols];
 
         for (int i = 0; i < rows; i++)
         {
             while (true)
             {
-                Console.WriteLine($"Введіть значення {i + 1}-го рядка матриці (відокремлюючи пробілами):");
+                Console.WriteLine($"Введіть елементи для {i + 1}-го рядка (через пробіл):");
                 string input = Console.ReadLine();
-
                 string[] rowValues = input.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
                 if (rowValues.Length == cols)
@@ -37,10 +72,10 @@ internal class Run_MatrixTask
                         else
                         {
                             Console.WriteLine("Введено некоректне число. Спробуйте ще раз.");
-                            return; 
+                            continue;
                         }
                     }
-                    break; 
+                    break;
                 }
                 else
                 {
@@ -49,26 +84,17 @@ internal class Run_MatrixTask
             }
         }
 
-        Console.WriteLine("\nВведена матриця:");
-        for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < cols; j++)
-            {
-                Console.Write(matrix[i, j] + "\t");
-            }
-            Console.WriteLine();
-        }
+        return new MatrixOperations(matrix);
     }
 
     static int GetValidIntegerInput()
     {
-        int value;
         while (true)
         {
-            if (int.TryParse(Console.ReadLine(), out value) && value > 0)
+            if (int.TryParse(Console.ReadLine(), out int value) && value > 0)
                 return value;
-            else
-                Console.WriteLine("Будь ласка, введіть позитивне ціле число.");
+
+            Console.WriteLine("Будь ласка, введіть позитивне ціле число.");
         }
     }
 }
